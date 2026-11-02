@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#16301f">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Agenda">
+<title>Agenda · Clínica Biancart</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&family=Nunito+Sans:wght@400;700&display=swap">
+<style>
+:root{--bg:#f7f1e3;--card:#fffbf2;--ink:#16301f;--mut:#686a5a;--gold:#a97f22;--line:#e2d6b8;--hd:#16301f;--pri:#1f4a30;--ok:#2f6b46;--bad:#a63d3d;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#101a14;--card:#17251c;--ink:#efe6d2;--mut:#a3a592;--gold:#d3a948;--line:#2b3a2f;--hd:#0b130e;--pri:#2f6b46;--ok:#6fbf8b;--bad:#e58383;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#101a14;--card:#17251c;--ink:#efe6d2;--mut:#a3a592;--gold:#d3a948;--line:#2b3a2f;--hd:#0b130e;--pri:#2f6b46;--ok:#6fbf8b;--bad:#e58383;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.4 "Nunito Sans",system-ui,sans-serif}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--hd);z-index:10}
+button,input,select,textarea{font:inherit;color:inherit}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:11;background:var(--hd);color:#f4ecd8;padding:10px 16px 12px}
+.brand{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+h1,h2{font-family:"Cormorant Garamond",Georgia,serif;font-weight:600;margin:0}
+h1{font-size:27px;line-height:1.1}
+#st{font-size:12px;color:#e0cd92;text-align:right}#st.ok{color:#a8dcb9}#st.bad{color:#ffb9b9}
+#q{width:100%;margin-top:8px;padding:11px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.12);color:#fff}
+#q::placeholder{color:#d9d2bd}
+.nav{display:flex;align-items:center;gap:8px;padding:14px 16px 4px}
+.nav button{flex:none;width:46px;height:46px;border-radius:50%;border:1px solid var(--line);background:var(--card);font-size:24px;cursor:pointer}
+.d{flex:1;text-align:center}.d b{display:block;font:600 24px/1.15 "Cormorant Garamond",Georgia,serif}
+.d small{display:block;color:var(--gold);font-weight:700;font-size:13px}
+.tools{display:flex;gap:8px;padding:8px 16px}.tools .b{padding:0 18px;min-height:44px}.tools input{flex:1;min-width:0;padding:8px 12px;border:1px solid var(--line);border-radius:12px;background:var(--card)}
+.wk{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;padding:4px 16px}
+.wk button{display:flex;flex-direction:column;align-items:center;min-height:58px;padding:6px 0;border:1px solid var(--line);border-radius:12px;background:var(--card);font-size:12px;cursor:pointer}
+.wk b{font-size:18px}.wk i{font-style:normal;color:var(--mut)}
+.wk .on{background:var(--pri);border-color:var(--pri);color:#f4ecd8}.wk .on i{color:#d7cfae}
+#sum{margin:10px 16px 8px;font-size:14px;color:var(--mut)}
+#list,#res{margin:0 16px;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--card)}
+#res{margin-top:12px}
+.r{display:grid;grid-template-columns:58px 1fr;align-items:center;width:100%;min-height:52px;padding:6px 12px 6px 0;border:0;border-bottom:1px solid var(--line);border-left:5px solid transparent;background:none;text-align:left;cursor:pointer}
+.r:last-child{border-bottom:0}
+.r time{padding-left:8px;font-weight:700;font-size:14px;color:var(--mut)}
+.r .n{font-weight:700}.r.f .n{font-weight:400;color:var(--mut);opacity:.65}
+.r small{display:block;font-size:13px;color:var(--mut)}
+.s-a{border-left-color:var(--gold)}.s-c{border-left-color:var(--ok)}.s-d{border-left-color:var(--mut)}.s-f{border-left-color:var(--bad)}
+.brk{padding:6px;text-align:center;font-size:12px;color:var(--mut);background:var(--bg);border-bottom:1px solid var(--line)}
+.mut{margin:0;padding:16px;color:var(--mut)}
+.note{margin:16px}.note label,.sheet label{display:block;font-weight:700;font-size:14px;color:var(--mut)}
+textarea,.sheet input,.sheet select{display:block;width:100%;margin-top:4px;padding:12px;border:1px solid var(--line);border-radius:10px;background:var(--card)}
+.sheet{position:fixed;inset:0;z-index:30;overflow:auto;background:var(--bg);padding:calc(16px + env(safe-area-inset-top,0px)) 16px calc(24px + env(safe-area-inset-bottom,0px))}
+.sheet label{margin-top:12px}.sheet h2{font-size:26px}
+#er{min-height:1.4em;margin:10px 0 0;color:var(--bad);font-weight:700}
+.acts{display:grid;gap:10px;margin-top:8px}
+.b{display:flex;align-items:center;justify-content:center;min-height:48px;border:1px solid var(--line);border-radius:12px;background:var(--card);color:var(--ink);font-weight:700;text-decoration:none;cursor:pointer}
+.b.p{background:var(--pri);border-color:var(--pri);color:#f4ecd8}.b.x{color:var(--bad)}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+html{-webkit-text-size-adjust:100%}
+button,.b,a{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+input[type=date],input[type=search]{-webkit-appearance:none;appearance:none;min-height:44px}
+.brand{align-items:center;flex-wrap:wrap;row-gap:0}#st{order:3;flex:1 0 100%;text-align:left}
+.hb{order:2;border:1px solid rgba(255,255,255,.3);border-radius:10px;background:none;color:#f4ecd8;min-height:38px;padding:0 14px;font-weight:700;cursor:pointer}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}.chips button{min-height:42px;padding:0 16px;border:1px solid var(--line);border-radius:21px;background:var(--card);font-weight:700;cursor:pointer}
+.ms{min-height:1.4em;margin:10px 0 0;font-weight:700;color:var(--ok)}.tip{margin:12px 0;color:var(--mut)}
+</style>
+</head>
+<body>
+<header>
+<div class="brand"><h1>Clínica Biancart</h1><span id="st"></span><button class="hb" id="bkb">Backup</button></div>
+<input id="q" type="search" placeholder="Buscar paciente por nome ou telefone" autocomplete="off" aria-label="Buscar paciente">
+</header>
+<main>
+<div id="main">
+<div class="nav"><button id="pv" aria-label="Dia anterior">‹</button><div class="d"><b id="dt"></b><small id="yr"></small></div><button id="nx" aria-label="Próximo dia">›</button></div>
+<div class="tools"><button class="b" id="hj">Hoje</button><input type="date" id="dp" aria-label="Ir para a data"></div>
+<div class="wk" id="wk"></div>
+<p id="sum"></p>
+<div id="list"></div>
+<section class="note"><label for="nt">Anotações do dia</label><textarea id="nt" rows="4"></textarea></section>
+</div>
+<div id="res" hidden></div>
+</main>
+<div class="sheet" id="sh" hidden>
+<h2 id="sht">Novo agendamento</h2>
+<label>Data<input id="fd" type="date"></label>
+<label>Horário<select id="ft"></select></label>
+<label>Nome do paciente<input id="fn" autocomplete="off"></label>
+<label>Telefone<input id="fp" type="tel" inputmode="tel" placeholder="(11) 91234-5678"></label>
+<label>Categoria<input id="fc" autocomplete="off" placeholder="Particular, convênio, retorno…"></label>
+<div class="chips" id="ch"></div>
+<label>Situação<select id="fs"></select></label>
+<p id="er" role="alert"></p>
+<div class="acts">
+<button class="b p" id="sv">Salvar</button>
+<a class="b" id="wa" target="_blank" rel="noopener" hidden>Confirmar por WhatsApp</a>
+<a class="b" id="tl" hidden>Ligar para o paciente</a>
+<button class="b x" id="dl">Excluir agendamento</button>
+<button class="b" id="cn">Fechar</button>
+</div>
+</div>
+<div class="sheet" id="bk" hidden>
+<h2>Backup da agenda</h2>
+<p class="tip">Seus agendamentos ficam salvos na nuvem e aparecem em todos os aparelhos em que você entrar. O backup é uma cópia extra de segurança.</p>
+<div class="acts"><button class="b p" id="bc">Copiar backup</button></div>
+<label>Restaurar um backup<textarea id="bt" rows="6" placeholder="Cole aqui o código do backup"></textarea></label>
+<div class="acts"><button class="b" id="br">Restaurar</button></div>
+<p class="ms" id="bm" role="status"></p>
+<p class="tip">No iPhone: abra no Safari, toque em Compartilhar e depois em “Adicionar à Tela de Início”.</p>
+<div class="acts"><button class="b" id="out">Sair da conta</button><button class="b" id="bx">Fechar</button></div>
+</div>
+<div class="sheet" id="lg">
+<h2>Entrar na agenda</h2>
+<label>E-mail<input id="le" type="email" autocomplete="username" inputmode="email"></label>
+<label>Senha<input id="lp" type="password" autocomplete="current-password"></label>
+<p id="lm" role="alert" style="min-height:1.4em;margin:10px 0 0;color:var(--bad);font-weight:700"></p>
+<div class="acts"><button class="b p" id="li">Entrar</button></div>
+</div>
+<script src="https://www.gstatic.com/firebasejs/12.6.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/12.6.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore-compat.js"></script>
+<script>
+(()=>{
+const $=s=>document.querySelector(s),pad=n=>String(n).padStart(2,'0');
+const iso=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+const parse=s=>{const[a,b,c]=s.split('-');return new Date(+a,b-1,+c)};
+const esc=s=>String(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const W=['dom','seg','ter','qua','qui','sex','sáb'],WL=['domingo','segunda-feira','terça-feira','quarta-feira','quinta-feira','sexta-feira','sábado'];
+const MO=['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+const ST={a:'Agendado',c:'Confirmado',d:'Atendido',f:'Faltou'};
+const H={'2027-01-01':'Feriado nacional · Confraternização Universal','2027-02-08':'Ponto facultativo · Carnaval','2027-02-09':'Ponto facultativo · Carnaval','2027-02-10':'Ponto facultativo · Quarta-feira de Cinzas','2027-03-26':'Feriado nacional · Sexta-feira Santa','2027-04-21':'Feriado nacional · Tiradentes','2027-05-27':'Ponto facultativo · Corpus Christi','2027-09-07':'Feriado nacional · Independência do Brasil','2027-10-12':'Feriado nacional · Nossa Senhora Aparecida','2027-11-02':'Feriado nacional · Finados','2027-11-15':'Feriado nacional · Proclamação da República'};
+const F={'01-01':'Feriado nacional · Confraternização Universal','04-21':'Feriado nacional · Tiradentes','05-01':'Feriado nacional · Dia do Trabalho','09-07':'Feriado nacional · Independência do Brasil','10-12':'Feriado nacional · Nossa Senhora Aparecida','11-02':'Feriado nacional · Finados','11-15':'Feriado nacional · Proclamação da República','11-20':'Feriado nacional · Consciência Negra','12-25':'Feriado nacional · Natal'};
+const hol=d=>H[d]||F[d.slice(5)]||'';
+const T=[];for(let m=480;m<=1140;m+=20)if(m<740||m>780)T.push(pad(m/60|0)+':'+pad(m%60));
+const fix=d=>{d=new Date(d);while(d.getDay()%6==0)d.setDate(d.getDate()+1);return d};
+const step=(d,n)=>{d=new Date(d);do d.setDate(d.getDate()+n);while(d.getDay()%6==0);return d};
+const LS='biancart-agenda-v1',load=()=>{try{return JSON.parse(localStorage.getItem(LS))||{}}catch(e){return{}}};
+let cur=fix(new Date()),days={},q='',edit=null;
+const stat=(t,c)=>{const e=$('#st');e.textContent=t;e.className=c||''};
+const hide=()=>{$('#sh').hidden=true;edit=null};
+
+function render(){
+ const s=q.length>1;$('#main').hidden=s;$('#res').hidden=!s;
+ if(s)return search();
+ const d=iso(cur),day=days[d]||{},S=day.s||{},n=Object.keys(S).length,wl=WL[cur.getDay()];
+ $('#dt').textContent=wl[0].toUpperCase()+wl.slice(1)+', '+cur.getDate()+' de '+MO[cur.getMonth()];
+ $('#yr').textContent=cur.getFullYear()+(hol(d)?' · '+hol(d):'');
+ $('#dp').value=d;
+ const mon=new Date(cur);mon.setDate(cur.getDate()-cur.getDay()+1);
+ $('#wk').innerHTML=[0,1,2,3,4].map(i=>{const x=new Date(mon);x.setDate(mon.getDate()+i);const k=iso(x),c=Object.keys((days[k]||{}).s||{}).length;
+  return '<button data-d="'+k+'"'+(k==d?' class="on"':'')+'>'+W[i+1]+'<b>'+x.getDate()+'</b><i>'+(c||'–')+'</i></button>'}).join('');
+ const cf=Object.values(S).filter(a=>a.st=='c').length;
+ $('#sum').textContent=n+(n==1?' agendado':' agendados')+' · '+cf+(cf==1?' confirmado':' confirmados')+' · '+Math.max(T.length-n,0)+' livres';
+ if(!n)$('#sum').textContent+=' · toque num horário para agendar';$('#list').innerHTML=T.map(t=>{const a=S[t.replace(':','')],b=t=='13:20'?'<div class="brk">Intervalo</div>':'';
+  return b+(a?'<button class="r s-'+(a.st||'a')+'" data-t="'+t+'"><time>'+t+'</time><span><span class="n">'+esc(a.n)+'</span><small>'+esc([a.c,a.t,ST[a.st||'a']].filter(Boolean).join(' · '))+'</small></span></button>'
+   :'<button class="r f" data-t="'+t+'"><time>'+t+'</time><span class="n">Livre</span></button>')}).join('');
+ if(document.activeElement!==$('#nt'))$('#nt').value=day.note||'';
+}
+
+function search(){
+ const r=[],dg=q.replace(/\D/g,'');
+ Object.keys(days).sort().forEach(d=>{const S=days[d].s||{};Object.keys(S).sort().forEach(k=>{const a=S[k];
+  if(String(a.n).toLowerCase().includes(q)||(dg.length>2&&(a.t||'').replace(/\D/g,'').includes(dg)))r.push([d,k.slice(0,2)+':'+k.slice(2),a])})});
+ $('#res').innerHTML=r.length?r.slice(0,80).map(([d,t,a])=>{const x=parse(d);
+  return '<button class="r s-'+(a.st||'a')+'" data-d="'+d+'" data-t="'+t+'"><time>'+pad(x.getDate())+'/'+pad(x.getMonth()+1)+'</time><span><span class="n">'+esc(a.n)+'</span><small>'+t+' · '+W[x.getDay()]+' '+x.getFullYear()+(a.c?' · '+esc(a.c):'')+'</small></span></button>'}).join('')
+  :'<p class="mut">Nenhum paciente encontrado.</p>';
+}
+
+function put(d,fn){
+ const o=days[d],x=JSON.parse(JSON.stringify(o||{}));x.s=x.s||{};x.note=x.note||'';fn(x);
+ if(!Object.keys(x.s).length&&!x.note)delete days[d];else days[d]=x;
+ render();push(d,o,days[d]);
+}
+
+function links(){
+ const n=$('#fn').value.trim(),p=($('#fp').value||'').replace(/\D/g,''),d=$('#fd').value,t=$('#ft').value,w=$('#wa'),c=$('#tl');
+ if(p.length>=8&&n&&d){const x=parse(d),num=p.length<=11?'55'+p:p;
+  const m='Olá, '+n.split(' ')[0]+'! Aqui é da Clínica Biancart. Passando para confirmar sua consulta na '+WL[x.getDay()]+', dia '+pad(x.getDate())+'/'+pad(x.getMonth()+1)+', às '+t+'. Podemos confirmar?';
+  w.href='https://wa.me/'+num+'?text='+encodeURIComponent(m);c.href='tel:+'+num;w.hidden=c.hidden=false}
+ else{w.removeAttribute('href');c.removeAttribute('href');w.hidden=c.hidden=true}
+}
+
+function edt(d,t){
+ const a=((days[d]||{}).s||{})[t.replace(':','')];edit={d,t,had:!!a};
+ $('#sht').textContent=a?'Editar agendamento':'Novo agendamento';
+ $('#fd').value=d;$('#ft').value=t;$('#fn').value=a?a.n:'';$('#fp').value=a?a.t||'':'';$('#fc').value=a?a.c||'':'';$('#fs').value=a?a.st||'a':'a';
+ $('#er').textContent='';$('#dl').textContent='Excluir agendamento';delete $('#dl').dataset.ok;$('#dl').hidden=!a;links();$('#sh').hidden=false;$('#sh').scrollTop=0;
+ if(!a)$('#fn').focus();
+}
+
+async function save(){
+ const d=$('#fd').value,t=$('#ft').value,n=$('#fn').value.trim(),k=t.replace(':',''),e=edit,er=$('#er');
+ if(!d||!n){er.textContent='Preencha a data e o nome do paciente.';return}
+ if(parse(d).getDay()%6==0){er.textContent='Escolha um dia de segunda a sexta.';return}
+ const o=(days[d]||{}).s&&days[d].s[k],moved=d!=e.d||t!=e.t;
+ if(o&&moved){er.textContent='Esse horário já está ocupado por '+o.n+'.';return}
+ const a={c:$('#fc').value.trim(),n,t:$('#fp').value.trim(),st:$('#fs').value},ek=e.t.replace(':','');
+ $('#sv').disabled=true;
+ if(d==e.d)await put(d,x=>{if(e.had)delete x.s[ek];x.s[k]=a});
+ else{if(e.had)await put(e.d,x=>{delete x.s[ek]});await put(d,x=>{x.s[k]=a})}
+ $('#sv').disabled=false;cur=parse(d);hide();render();
+}
+
+async function del(){const e=edit;await put(e.d,x=>{delete x.s[e.t.replace(':','')]});hide()}
+
+$('#ft').innerHTML=T.map(t=>'<option>'+t+'</option>').join('');
+$('#fs').innerHTML=Object.keys(ST).map(k=>'<option value="'+k+'">'+ST[k]+'</option>').join('');
+$('#list').onclick=e=>{const r=e.target.closest('[data-t]');if(r)edt(iso(cur),r.dataset.t)};
+$('#res').onclick=e=>{const r=e.target.closest('[data-t]');if(r){cur=parse(r.dataset.d);$('#q').value='';q='';render();edt(r.dataset.d,r.dataset.t)}};
+$('#wk').onclick=e=>{const b=e.target.closest('[data-d]');if(b){cur=parse(b.dataset.d);render()}};
+$('#pv').onclick=()=>{cur=step(cur,-1);render()};
+$('#nx').onclick=()=>{cur=step(cur,1);render()};
+$('#hj').onclick=()=>{cur=fix(new Date());render()};
+$('#dp').onchange=e=>{if(e.target.value){cur=fix(parse(e.target.value));render()}};
+$('#q').oninput=e=>{q=e.target.value.trim().toLowerCase();render()};
+$('#nt').onchange=e=>put(iso(cur),x=>{x.note=e.target.value});
+$('#sh').oninput=links;
+$('#cn').onclick=hide;$('#sv').onclick=save;$('#dl').onclick=e=>{const b=e.currentTarget;if(b.dataset.ok)return del();b.dataset.ok=1;b.textContent='Toque de novo para excluir'};
+
+$('#ch').innerHTML=['Particular','Convênio','Retorno','Encaixe'].map(c=>'<button type="button">'+c+'</button>').join('');
+$('#ch').onclick=e=>{if(e.target.tagName=='BUTTON')$('#fc').value=e.target.textContent};
+const BK='BIANCART1:',bt=$('#bt'),bm=t=>{$('#bm').textContent=t};
+$('#bkb').onclick=()=>{bt.value='';bm('');$('#bk').hidden=false;$('#bk').scrollTop=0};
+$('#bx').onclick=()=>{$('#bk').hidden=true};
+$('#bc').onclick=()=>{bt.readOnly=true;bt.value=BK+JSON.stringify(days);bt.focus();bt.select();bt.setSelectionRange(0,bt.value.length);
+ let ok=false;try{ok=document.execCommand('copy')}catch(e){}
+ bt.readOnly=false;bm(ok?'Copiado! Cole em Notas ou no WhatsApp para guardar.':'Segure o texto acima e toque em Copiar.')};
+$('#br').onclick=()=>{const v=bt.value.trim();let o;
+ try{if(v.indexOf(BK))throw 0;o=JSON.parse(v.slice(BK.length));if(!o||typeof o!='object')throw 0}catch(e){bm('Esse texto não é um backup válido.');return}
+ Object.assign(days,o);render();pushDays(o).then(()=>bm(Object.keys(o).length+' dias restaurados.')).catch(()=>bm('Não foi possível enviar. Conecte-se à internet e tente de novo.'))};
+const FB={apiKey:"AIzaSyBbsHq5gYo6uhKt10gha1Efhb_TcRD8gjI",authDomain:"clinica-biancart.firebaseapp.com",projectId:"clinica-biancart",storageBucket:"clinica-biancart.firebasestorage.app",messagingSenderId:"122022624237",appId:"1:122022624237:web:90b0ef7f3a023ccec305e4"};
+let auth,db,col,FV,mg=0,unsub=null;const msg=t=>{$('#lm').textContent=t};
+try{firebase.initializeApp(FB);auth=firebase.auth();db=firebase.firestore();col=db.collection('dias');FV=firebase.firestore.FieldValue;
+ try{db.enablePersistence({synchronizeTabs:true}).catch(()=>{})}catch(e){}
+}catch(e){auth=null;msg('Sem internet para carregar a agenda. Conecte-se e abra de novo.')}
+function push(d,o,n){o=o||{};n=n||{};const os=o.s||{},ns=n.s||{},u={},x={};
+ Object.keys(Object.assign({},os,ns)).forEach(k=>{if(!ns[k])u[k]=FV.delete();else if(JSON.stringify(os[k])!=JSON.stringify(ns[k]))u[k]=ns[k]});
+ if(Object.keys(u).length)x.s=u;if((o.note||'')!=(n.note||''))x.note=n.note||'';
+ if(Object.keys(x).length)col.doc(d).set(x,{merge:true}).catch(()=>stat('Erro ao enviar. Tente de novo.','bad'))}
+async function pushDays(o){const ks=Object.keys(o).filter(d=>/^\d{4}-\d\d-\d\d$/.test(d));
+ for(let i=0;i<ks.length;i+=400){const b=db.batch();ks.slice(i,i+400).forEach(d=>b.set(col.doc(d),o[d]));await b.commit()}}
+function migrate(){const o=load();if(mg||!Object.keys(o).length)return;mg=1;
+ pushDays(o).then(()=>{try{localStorage.setItem(LS+'-migrado',localStorage.getItem(LS));localStorage.removeItem(LS)}catch(e){}}).catch(()=>{mg=0})}
+if(auth)auth.onAuthStateChanged(u=>{
+ if(unsub){unsub();unsub=null}
+ $('#lg').hidden=!!u;
+ if(!u){days={};render();return}
+ stat('Sincronizando…','');
+ unsub=col.onSnapshot({includeMetadataChanges:true},s=>{
+  s.docChanges().forEach(c=>{if(c.type=='removed')delete days[c.doc.id];else days[c.doc.id]=c.doc.data()});
+  render();const m=s.metadata;
+  stat(m.hasPendingWrites?'Enviando…':m.fromCache?'Aguardando conexão…':'Sincronizado',m.hasPendingWrites||m.fromCache?'':'ok');
+  if(!m.fromCache)migrate();
+ },e=>stat(e.code=='permission-denied'?'Sem permissão no banco de dados':'Erro de sincronização','bad'));
+});
+$('#li').onclick=()=>{if(!auth)return;const e=$('#le').value.trim(),p=$('#lp').value;
+ if(!e||!p){msg('Digite o e-mail e a senha.');return}
+ msg('');auth.signInWithEmailAndPassword(e,p).catch(x=>msg(x.code=='auth/network-request-failed'?'Sem internet. Conecte-se e tente de novo.':x.code=='auth/too-many-requests'?'Muitas tentativas. Aguarde alguns minutos e tente de novo.':'E-mail ou senha incorretos.'))};
+$('#lp').onkeydown=e=>{if(e.key=='Enter')$('#li').click()};
+$('#out').onclick=()=>{$('#bk').hidden=true;if(auth)auth.signOut()};
+render();
+})();
+</script>
+</body>
+</html>
